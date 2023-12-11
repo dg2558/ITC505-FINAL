@@ -1,9 +1,35 @@
+let moves = 0;
+const MAX_MOVES = 20; // Example moves limit
 const board = document.getElementById('board');
 const squares = [];
 
+let timerInterval;
+let seconds = 0;
+let minutes = 0;
 
+function startTimer() {
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  seconds++;
+  if (seconds === 60) {
+    seconds = 0;
+    minutes++;
+  }
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  document.getElementById('timer').innerText = `${formattedMinutes}:${formattedSeconds}`;
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
 
 function toggleSquare(index) {
+  moves++;
+  document.getElementById('moveCount').innerText = moves;
+
   const row = Math.floor(index / 5);
   const col = index % 5;
   const adjacentSquares = [
@@ -26,7 +52,6 @@ function toggleSquare(index) {
   });
 }
 
-
 function checkGameState() {
   const isWin = squares.every((square) => square.classList.contains('is-off'));
   if (isWin) {
@@ -37,15 +62,24 @@ function checkGameState() {
 }
 
 function displayWin() {
-  window.alert('Congratulations! You win');
+  stopTimer();
+  window.alert('Congratulations! You win in ' + moves + ' moves and ' + document.getElementById('timer').innerText + '!');
 }
 
 function displayLoss() {
-  window.alert('Game over!');
+  stopTimer();
+  window.alert('Game over! You reached the maximum number of moves.');
 }
 
 function newGame() {
+  moves = 0;
+  document.getElementById('moveCount').innerText = moves;
   resetBoard();
+  stopTimer();
+  seconds = 0;
+  minutes = 0;
+  document.getElementById('timer').innerText = '00:00';
+  startTimer();
 }
 
 function resetBoard() {
