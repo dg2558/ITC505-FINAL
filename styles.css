@@ -21,7 +21,7 @@ header {
 
 h1.game-title {
     color: #fff;
-    /* Add other styling properties as needed */
+   
 }
 
 .container {
@@ -30,6 +30,10 @@ h1.game-title {
     gap: 20px;
     text-align: center;
 }
+.container p {
+  color: #fff;
+}
+
 
 .board {
     display: grid;
